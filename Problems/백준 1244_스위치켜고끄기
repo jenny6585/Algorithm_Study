@@ -1,0 +1,50 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main{
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int bnum = Integer.parseInt(br.readLine());//number of buttons
+		StringTokenizer bst = new StringTokenizer(br.readLine());//status of button
+		int[] status = new int[bnum];
+		for (int i = 0; i < bnum; i++) {status[i] = Integer.parseInt(bst.nextToken());}
+		int pnum = Integer.parseInt(br.readLine());//num of students
+		
+		for (int i = 0; i < pnum; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int gender = Integer.parseInt(st.nextToken());//성별
+			int index = Integer.parseInt(st.nextToken());//number they got
+			
+			if(gender==1) {//남자일때
+				for (int j = index-1; j < bnum; j+=index) {
+					status[j]= status[j]==0?1:0;
+				}
+			}else if(gender==2){//여자일떄
+				int start = index-2;
+				int end = index;
+				
+				status[index-1] = status[index-1]==0?1:0;
+				while(start>=0 && end<bnum) {
+				
+					if(status[start]==status[end]) {
+						status[start]= status[start]==0?1:0;
+						status[end]= status[end]==0?1:0;
+						start --;
+						end ++;
+					}else {
+						break;
+					}
+					
+				}
+			}
+		}
+		for (int i = 1; i < bnum+1; i++) {
+			System.out.print(status[i-1]+" ");
+			if(i%20==0)System.out.println();
+		}
+	}
+}

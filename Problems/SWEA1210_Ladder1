@@ -1,0 +1,84 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main{
+	
+	public static int[] getStart(int[][]board) {//get start indexes 
+		int[] check=new int[100];//get start indexes with board size
+		int count =0;//count how many start in board
+		for (int i = 0; i < 100; i++) {
+			if(board[0][i]==1) {// if start
+				check[count] = i;//get index
+				count++;//count
+			}	
+		}
+		int[] start = new int[count];//array to know number of start, and where
+		for (int i = 0; i < count; i++) {//copy only till count
+			start[i] = check[i];
+		}
+		return start;//array with start index
+	}
+	
+	public static int play(int[][] board, int start) {//method to go down ladder
+		int[][] mark = new int[100][100];//mark where i went	
+		
+		int i=1;//i index
+		int j=start;//j index
+		int ans =0;//return if end is "2"
+		
+		mark[0][start]=1;//mark start
+		mark[1][start]=1;//mark next start
+		
+		while(i<=99) {//till reach bottom
+			if(i==99) {//if bottom
+				if(board[i][j]==2) {//if end value is 2
+					ans = 2;//return 2
+				}
+				break;
+			}
+			if((j+1)<=99 && board[i][j+1]==1 && mark[i][j+1]==0) {//move right
+				mark[i][j+1]=1;//mark
+				j++;
+				
+			}else if((j-1)>=0 && board[i][j-1]==1 && mark[i][j-1]==0) {//move left
+				mark[i][j-1] =1;//mark
+				j--;
+				
+			}else {//move down
+				mark[i+1][j] =1;//mark
+				i++;
+			}
+		}
+		return ans;
+	}
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		int board[][]=new int[100][100];//array to get game board
+		int ans =0;//answer
+		for (int i = 0; i <10; i++) {//for 10 times
+			int tc = Integer.parseInt(br.readLine());//get testcase num
+			
+			for (int j = 0; j < 100; j++) {//create board
+				StringTokenizer st = new StringTokenizer(br.readLine());//get one line
+				for (int k = 0; k < 100; k++) {
+					board[j][k] = Integer.parseInt(st.nextToken());// get int value in board
+				}
+			}//end create board
+			int start[] = getStart(board);//get start index
+			
+			for (int j = 0; j < start.length; j++) {//check where ends with 2
+				if(play(board, start[j])==2) {//if return value is 2
+					ans = start[j];//answer
+					break;
+				}
+			}
+			System.out.println("#"+tc+" "+ans);//print answer
+		}
+
+	}
+
+}

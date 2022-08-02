@@ -1,0 +1,72 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main {
+	
+	public static int[][] changeZero(int[][] board, int a) {//change unneeded value to 0
+		int size = (int)(a/2);//num of rows to change
+		int len=size;//num of values to change in one row
+		for (int i = 0; i < size; i++) {//left top
+			for (int j = 0; j < len; j++) {
+				board[i][j]=0;//change to 0
+			}
+			len--;
+		}
+		len =size;
+		for (int i = 0; i < size; i++) {//right top
+			for (int j = 0; j < len; j++) {
+				board[i][a-1-j]=0;//change to 0
+			}
+			len--;
+		}
+		len =size;
+		for (int i = 0; i < size; i++) {//left bottom
+			for (int j = 0; j < len; j++) {
+				board[a-1-j][i]=0;//change to 0
+			}
+			len--;
+		}
+		len =size;
+		for (int i = 0; i < size; i++) {//right bottom
+			for (int j = 0; j < len; j++) {
+				board[a-1-i][a-1-j]=0;//change to 0
+			}
+			len--;
+		}
+		
+		return board;
+	}
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		int testcase = Integer.parseInt(br.readLine());//testcase num
+		
+		for (int i = 0; i < testcase; i++) {//for testcase times
+			
+			int size = Integer.parseInt(br.readLine());//get size of board
+			int sum =0;//sum value of crops
+			int board[][] = new int[size][size];//get num of crop values
+			for (int j = 0; j < size; j++) {//make board
+				char[] charst= br.readLine().toCharArray();//get one line and make it to char
+				for (int k = 0; k < size; k++) {
+					board[j][k] = Character.getNumericValue(charst[k]);//change char array to int
+				}
+			}//end making board
+			
+			board = changeZero(board,size);// change unneeded value to 0
+			for (int j = 0; j < board.length; j++) {//sum value of crops
+				for (int j2 = 0; j2 < board.length; j2++) {
+					sum+=board[j][j2];
+				}
+			}//end sum
+			System.out.println("#"+(i+1)+" "+sum);//print answer
+			
+		}//end testcase times
+
+	}//end main
+
+}//end class
+

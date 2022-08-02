@@ -1,0 +1,72 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Main {
+	static int time[];//list of how many times to move
+	public static int[] makelist(int num) {//make times list to know move times
+		time= new int[num*2];//turn num*2 times
+		int count =2;
+		time[0] = 1;//first index always 1
+		int start = num-1;//first value already in time
+		for (int i = 1; i < 4; i++) {time[i] = num-1;}//first 3 value is num-1
+		for (int i = 4; i < num*2; i++) {
+			if(count ==2) {//for 2times same value
+				count=0;//count again
+				start--;//start-1
+			}
+			time[i] = start;
+			count++;//count times
+		}
+		return time;
+	}
+	//right down left up
+	public static int[][] fill(int[][] board,int size) {//method to fill in board
+		int v=0;//to show direction
+		int num =1;//number to put in
+		int ci =0;//current index i
+		int cj =0;//current index j
+		board[0][0]=1;//first vlaue 1
+		for (int i = 1; i < time.length; i++) {
+			for (int j = 0; j < time[i]; j++) {//change direction
+				if(v%4==0)cj++;//go right
+				else if(v%4==1)ci++;//go down
+				else if(v%4==2)cj--;//go left
+				else if(v%4==3) ci--;//go up
+				board[ci][cj] = ++num;// put value
+			}
+			v++;//change direction
+		}
+		return board;
+	}
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		
+		int testcase = Integer.parseInt(br.readLine());//testcase input num
+		
+		for (int i = 0; i < testcase; i++) {//for testcase times
+			int size = Integer.parseInt(br.readLine());// get size of board
+			int board[][] = new int[size][size];//make board
+			
+			if(size==1) {//if size is 1
+				board[0][0] = 1;// only one value
+			}else if(size>11){// if over 11 stop
+				break;
+			}else {
+				makelist(size);//get times to move list
+				board = fill(board,size);//fll in board
+			}
+			
+			System.out.println("#"+(i+1));//print board array
+			for (int j = 0; j < board.length; j++) {
+				for (int j2 = 0; j2 < board.length; j2++) {
+					System.out.print(board[j][j2]+" ");
+				}
+				System.out.println();
+			}//end of print board
+		}//end of testcase
+	}//end main
+
+}//end class

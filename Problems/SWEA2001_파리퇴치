@@ -1,0 +1,52 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+
+public class Main {
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));//buffer output
+		String nm[];//get value n,m
+		int num[][];//array of numbers
+		int sum[][];//array of sum of numbers
+		int testcase = Integer.parseInt(br.readLine());//get testcase
+		
+		for (int t = 0; t < testcase; t++) {//for testcase times
+			int max =0;//max value of sum
+			int temp=0;//compare max
+			
+			nm = br.readLine().split(" ");//get n, m value in string
+			
+			int n = Integer.parseInt(nm[0]);//n value to int
+			int m = Integer.parseInt(nm[1]);//m value to int
+			
+			num = new int[n][n];//initialize num array
+			sum = new int[n+1][n+1];//initialize sum array
+			for (int i = 0; i <n+1; i++) {//put first row to 0
+				sum[0][i]=0;//horizontal first line 0 
+				sum[i][0]=0;//vertical first line 0
+			}
+			for (int i = 0; i < n; i++) {//get numbers to array
+				String line[] = br.readLine().split(" ");//read one line
+				for (int j = 0; j < line.length; j++) {
+					num[i][j] = Integer.parseInt(line[j]);//put values in int
+					sum[i+1][j+1] = sum[i][j+1]+sum[i+1][j]+num[i][j]-sum[i][j];//get sum of nums between(0,0) (i,j)
+					
+				}
+			}//end array of putting numbers in num
+			for (int i = 0; i < n-m+1; i++) {//check max of sum
+				for (int j = 0; j < n-m+1; j++) {
+					temp = sum[m+i][m+j]-sum[i][m+j]-sum[m+i][j]+sum[i][j];//get sum of nums between(i+m,j+m) (i,j)
+					if(temp>max) {max = temp;}//if temp is bigger change max
+				}
+			}//end check for
+			bw.write("#"+(t+1)+" "+max+"\n");//print answer	
+		}
+		bw.flush();//buffer flush
+		bw.close();//buffer close
+	}//end main
+}//end class

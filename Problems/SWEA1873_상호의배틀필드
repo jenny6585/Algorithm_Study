@@ -1,0 +1,147 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main {
+	
+	
+	
+	static String st;//status
+	static int curi;//current i index
+	static int curj;//current j index
+	public static void find_t(String[][] board){//find start point
+		for (int i = 0; i < board.length; i++) {//search inside board
+			for (int j = 0; j < board[i].length; j++) {
+				if(board[i][j].contains("<")|| board[i][j].contains(">")|| board[i][j].contains("^")|| board[i][j].contains("v")) {//if tank current index
+					if(board[i][j].equals("<")) {//change values to start place
+						st="<";
+						curi = i;
+						curj=j;
+					}else if(board[i][j].equals(">")) {
+						st=">";
+						curi = i;
+						curj=j;
+					}else if(board[i][j].equals("^")) {
+						st="^";
+						curi = i;
+						curj=j;
+					}else {
+						st="v";
+						curi = i;
+						curj=j;
+					}
+				}//end if tank
+			}
+		}//end searching board
+	}//end find_t method
+	
+	public static String[][] play(String[][] board,String[] m) {//playing method
+		for (int i = 0; i < m.length; i++) {//for move times
+			if(m[i].equals("U")) {//if move up
+				st = "^";//change status
+				if((curi>0) && board[curi-1][curj].equals(".")) {//if not out of range, is road
+					board[curi][curj] =".";//change current to road
+					curi--;//change i index
+					}
+				board[curi][curj]= st;// change current place to status
+				
+			}else if(m[i].equals("D")) {//if move down
+				st = "v";
+				if((curi+1<board.length) && board[curi+1][curj].equals(".")) {//if not out of range, is road
+					board[curi][curj] =".";//change current to road
+					curi++;//add i index
+					}
+				board[curi][curj]= st;// change current place to status
+			}else if(m[i].equals("L")) {//if move left
+				st = "<";
+				if((curj>0) && board[curi][curj-1].equals(".")) {//if not out of range, is road
+					board[curi][curj] =".";//change current to road
+					curj--;//change j index
+					}
+				board[curi][curj]= st;// change current place to status
+			}else if(m[i].equals("R")) {//if move right
+				st = ">";
+				if((curj+1<board[0].length) && board[curi][curj+1].equals(".")) {//if not out of range, is road
+					board[curi][curj] =".";//change current to road
+					curj++;//add j index
+					}
+				board[curi][curj]= st;// change current place to status
+			}else if(m[i].equals("S")) {//if move shoot
+				if(st.equals("<")) {//find direction
+					for (int j = curj; j>=0 ; j--) {//find wall
+						if(board[curi][j].equals("#")) {break;}//if steel wall
+						if(board[curi][j].equals("*")) {//if brick wall
+							board[curi][j]=".";//change current to road
+							break;//get out for
+						}
+					}//end for
+				}else if(st.equals(">")) {//find direction
+					for (int j = curj; j<board[curi].length ; j++) {//find wall
+						if(board[curi][j].equals("#")) {break;}//if steel wall
+						if(board[curi][j].equals("*")) {//if brick wall
+							board[curi][j]=".";//change current to road
+							break;//get out for
+						}
+					}//end for
+				}else if(st.equals("^")) {//find direction
+					for (int j = curi; j>=0 ; j--) {//find wall
+						if(board[j][curj].equals("#")) {break;}//if steel wall
+						if(board[j][curj].equals("*")) {//if brick wall
+							board[j][curj]=".";//change current to road
+							break;//get out for
+						}
+					}//end for
+				}else if(st.equals("v")) {//find direction
+					for (int j = curi; j<board.length ; j++) {//find wall
+						if(board[j][curj].equals("#")) {break;}//if steel wall
+						if(board[j][curj].equals("*")) {//if brick wall
+							board[j][curj]=".";//change current to road
+							break;//get out for
+						}
+					}//end for
+				}else {//if non of above pass
+					continue;}
+			}
+		}
+		return board;
+	}//end play method
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));//buffer output
+		
+		int testcase = Integer.parseInt(br.readLine());//get testcase num
+		for (int t = 0; t < testcase; t++) {//for testcase times
+			StringTokenizer st = new StringTokenizer(br.readLine());//read in line
+			int h = Integer.parseInt(st.nextToken());//get height of field
+			int w = Integer.parseInt(st.nextToken());//get width of field
+			
+			String[][]board = new String[h][w];//make field
+			for (int i = 0; i < h; i++) {//get value in board
+				board[i]=br.readLine().split("");//get each value to array
+				}
+			find_t(board);//find start point
+			
+			int move_t = Integer.parseInt(br.readLine());//times to move
+			String move[] = br.readLine().split("");//array of moving
+			
+			board = play(board, move);// move as move[]
+			bw.write(String.valueOf("#"+(t+1)+" "));//print testcase num
+
+			for (int i = 0; i <h ; i++) {//print result field
+				for (int j = 0; j < w; j++) {
+					bw.write(String.valueOf(board[i][j]));
+				}
+				bw.write(String.valueOf("\n"));//change line
+			}
+		}//end testcase
+		bw.flush();//flush buffer
+		bw.close();//close buffer
+
+	}//end main
+
+}//end class

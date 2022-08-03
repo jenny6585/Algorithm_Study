@@ -1,0 +1,43 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.StringTokenizer;
+
+public class Main {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));//buffer output
+		
+		String nm[];//get n, m value
+		int narray[];//array of numbers
+		int add[];//part sum array
+		
+		nm= br.readLine().split(" ");//get value n, m
+		int n = Integer.parseInt(nm[0]);//n value to int
+		int m = Integer.parseInt(nm[1]);//m value to int
+		
+		narray = new int[n];//make array for numbers
+		add = new int[n+1];//make array for sum numbers
+		String num[] =br.readLine().split(" ");//get numbers by line
+		add[0] =0;//first index 0
+		for (int i = 0; i < n; i++) {//for length of numbers
+			narray[i] =Integer.parseInt(num[i]);// make values to int
+			add[i+1] =narray[i]+add[i];// add up values 0~i
+		}//end geting arrays set
+		
+		for (int i = 0; i < m; i++) {//for m times
+			int sum =0;//get sum of nums
+			String ab[] = br.readLine().split(" ");//get values a,b
+			int a = Integer.parseInt(ab[0]);//a value to int
+			int b = Integer.parseInt(ab[1]);//b value to int
+			
+			bw.write((add[b]-add[a-1])+"\n");//print sum of index a~b
+		}
+		
+		bw.flush();//buffer flush
+		bw.close();//buffer close
+	}
+
+}

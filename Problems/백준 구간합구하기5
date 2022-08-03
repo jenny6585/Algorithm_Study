@@ -1,0 +1,49 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+
+public class Main {
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));//buffer output
+		
+		String[] input = br.readLine().split(" ");//get values n ,m
+		int n = Integer.parseInt(input[0]);//n value to int
+		int m = Integer.parseInt(input[1]);//m value to int
+		int[][] graph = new int[n][n];//make array for numbers
+		int[][]add = new int[n+1][n+1];//sums of graph array
+		
+		for (int i = 0; i < n+1; i++) {//fill zero in sum up array
+			add[0][i]=0;//first row 0
+			add[i][0]=0;//vertical first row 0
+		}//end filling in zero
+		
+		for (int i = 0; i < n; i++) {//get value of graph
+			String temp[];//get one line in string
+			temp = br.readLine().split(" ");//split line to each nnumber
+			for (int j = 0; j < n; j++) {
+				graph[i][j]= Integer.parseInt(temp[j]);//values to int
+				add[i+1][j+1] = add[i][j+1]+add[i+1][j]+graph[i][j]-add[i][j];//get sum of values (0,0)~(i,j)
+			}
+		}//end get value graph
+		
+		for (int i = 0; i < m; i++) {//
+			String temp[];
+			temp = br.readLine().split(" ");//get 
+			int x1 = Integer.parseInt(temp[0])-1;//set(x,y)
+			int y1 = Integer.parseInt(temp[1])-1;
+			int x2 = Integer.parseInt(temp[2])-1;//set(x2,y2)
+			int y2 = Integer.parseInt(temp[3])-1;
+			int ans = (add[x2+1][y2+1]-add[x1][y2+1]-add[x2+1][y1]+add[x1][y1]);//get sum of numbers between (x,y), (x2,y2)
+			bw.write(ans+"\n");//print answer
+		}
+		bw.flush();//buffer flush
+		bw.close();//buffer close
+
+	}//end main
+
+}//end class

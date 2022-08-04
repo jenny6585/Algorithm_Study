@@ -1,0 +1,53 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main{
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));//buffer output
+		
+		int temp;//to memorize value
+		int[] sub= {1,2,3,4,5};//to subtract 1 2 3 4 5
+		for (int tc = 1; tc <=10; tc++) {//for 10 testcase
+			Queue<Integer> que = new LinkedList<>();//make queue
+			
+			int testcase= Integer.parseInt(br.readLine());//get testcase num
+			String input[] = br.readLine().split(" ");//get input as string
+			for (int t = 0; t < 8; t++) {//change array to int value
+				que.add(Integer.parseInt(input[t]));//add value in queue
+			}
+			int k=0;//index of subtracting
+			while(true) {
+				temp = que.poll()-sub[k];//from first value subtract 12345 and poll
+				if(temp<1) {//if value is smaller than 0
+					que.add(0);//add 0
+					break;//end while
+				}
+				que.add(temp);//add value
+				if(k==4) {//if index at end
+					k=0;//go to first
+				}else {//else
+					k++;//next index
+				}
+				
+			}//end while
+			
+			
+			bw.write("#"+testcase+" ");//print testcase num
+			for (int i = 0; i < 8; i++) {//print answer
+				bw.write(que.poll()+" ");
+			}
+			bw.write("\n");//change line
+		} 
+		bw.flush();//buffer flush
+		bw.close();//buffer close
+
+	}//end main
+
+}//end class

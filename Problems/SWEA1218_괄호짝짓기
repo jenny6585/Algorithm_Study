@@ -1,0 +1,55 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Stack;
+
+public class Main{
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		int ans;//if bracket is pair 1
+
+		
+		for (int i = 1; i <=10; i++) {//for 10 testcase
+			Stack<String> stack = new Stack<>();//make stack
+			int num = Integer.parseInt(br.readLine());//get num for input size
+			String []input=new String[num];//make array to get input
+			input = br.readLine().split("");//get input as string
+			
+			for (String j:input) {//for inputs
+				switch(j) {
+				case ")"://if )
+					if(stack.peek().equals("(")) {//if top of stack is)
+						stack.pop();//take out
+					}else stack.push(j);//else add in stack
+					break;//break
+				case "]"://if ]
+					if(stack.peek().equals("[")) {//if top of stack is[
+						stack.pop();//take out
+					}else stack.push(j);//else add in stack
+					break;
+				case "}"://if }
+					if(stack.peek().equals("{")){//if top of stack is{
+						stack.pop();//take out
+					}else stack.push(j);//else add in stack
+					break;
+				case ">"://if >
+					if(stack.peek().equals("<")) {//if top of stack is<
+						stack.pop();//take out
+					}else stack.push(j);//else add in stack
+					break;
+				default:
+					stack.push(j);//add in stack
+					break;
+				}//end switch
+				
+			}//end for checking pair
+			
+			ans = stack.isEmpty()==true? 1:0;// check if stack is empty
+			System.out.println("#"+i+" "+ans);//print answer
+		}//end for testcase
+
+	}//end main
+
+}//end class

@@ -1,0 +1,24 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main{
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+	
+		int n = Integer.parseInt(br.readLine());//get input n
+		Queue<Integer> q = new LinkedList<>();//make linkedlist queue
+		
+		for (int i = 0; i < n; i++) q.add(i+1);//put numbers in queue
+		
+		while(q.size()>1) {//until one num left
+			q.poll();//delete one num
+			q.offer(q.poll());//add one num
+		}//end while
+		System.out.println(q.poll());//print last one
+	}//end main
+
+}//end class

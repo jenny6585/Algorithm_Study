@@ -1,0 +1,42 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main {
+//1158,1168
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));//buffer output
+
+		String[] string = br.readLine().split(" ");//n,k string input
+		int n = Integer.parseInt(string[0]);//change to int
+		int k = Integer.parseInt(string[1]);//change to int
+		int temp = 0;
+		Queue<Integer> que = new LinkedList<>();//큐 생성
+
+		for (int t = 1; t <= n; t++) {//큐에 순서대로 1,2,3,4 입력
+			que.add(t);
+		}
+		bw.write("<");
+		for (int i = 0; i < n; i++) {
+			for (int j = 1; j < k; j++) {//k 횟수 만큼 넘기고
+				temp = que.remove();
+				que.add(temp);
+			}
+			if (que.size() == 1) {
+				bw.write(que.remove() + ">");//마지막일경우 뒤에 브라켓 달기
+			} else {
+				bw.write(que.remove() + ", ");//buffer에 값 추가
+			}
+		}
+		bw.flush();//버퍼 flush
+		bw.close();//버퍼 close
+
+	}
+
+}

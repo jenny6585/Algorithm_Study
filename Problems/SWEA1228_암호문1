@@ -1,0 +1,44 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.LinkedList;
+
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));//buffer input
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));//buffer output
+		
+		for (int t = 1; t <=10; t++) {//testcase
+			int n = Integer.parseInt(br.readLine());//length of pw
+			String[]temp =br.readLine().split(" ");//pw input in string
+			LinkedList<Integer> pw = new LinkedList<>();//비번 저장할 리스트
+			for (int i = 0; i < n; i++) {//pw input to int
+				pw.add(Integer.parseInt(temp[i]));
+			}//end for
+			int command = Integer.parseInt(br.readLine());//length of command
+			temp = br.readLine().split(" ");//명령 저장
+			int index,count,now=0;//index: 어디에, count: 몇개를 추가할지 나타내는 변수, now: I의 위치
+			for (int i = 0; i < command; i++) {//명령 횟수만큼
+				if(temp[now].equals("I")) {//if index is I
+					index = Integer.parseInt(temp[now+1]);//next index is index
+					count = Integer.parseInt(temp[now+2]);//and count
+					for (int j = 0; j < count; j++) {//for count times
+						pw.add(index+j,Integer.parseInt(temp[now+j+3]));//add number
+					}
+					now+=(3+count);//change I 위치
+				}
+			}
+			bw.write("#"+t);//출력
+			for (int i=0;i<10;i++) {
+				bw.write(" "+pw.get(i));
+			}
+			bw.write("\n");
+		}
+		bw.flush();//buffer flush
+		bw.close();//buffer close
+	}
+
+}

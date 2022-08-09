@@ -1,0 +1,76 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+
+public class Main {
+	
+	static int[] num =new int[9];//인영의 임시 카드 배열
+	static int win;//a 기준 승리 횟수
+	static int lose;//진 횟수
+	static int A[]= new int[9];
+	static int B[]= new int[9];
+	static boolean visited[] = new boolean[9];//방문 표기용
+	
+	public static void possablity(int cnt) {//이기는 횟수 계산
+		int asum;//a의 총점
+		int bsum;//b의 총점
+		
+		if(cnt==9) {//9번 돌았으면
+			asum=0;
+			bsum=0;
+			for (int i = 0; i < 9; i++) {//총점 계산해보고
+				if(A[i]>num[i]) {
+					asum += A[i]+num[i];
+				}else {
+					bsum += A[i]+num[i];
+				}
+			}
+			if(asum>bsum) win++;//이기면 표시
+			else lose++;//지면 표시
+			return;//리턴하기
+		}
+		for (int i = 0; i < 9; i++) {//인영의 카드 순서 바꾸기
+			if(visited[i]==false) {//한번 낸 카드는 제외하고
+				visited[i]=true;//냈다고 표시하고
+				num[cnt] = B[i];//num에 넣어서 기억
+				possablity(cnt+1);//계속해서 다음 위치 찾기
+				visited[i]=false;//static이라 다음에 사용을 위해 초기화
+			}
+		}
+	}
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		
+		int testcase = Integer.parseInt(br.readLine());
+		boolean check;//인영, 규영 카드 구분하기 위해
+		for (int t = 1; t <= testcase; t++) {//testcase for
+			String[] string = br.readLine().split(" ");
+			for (int i = 0; i < 9; i++) {//규영이의 카드
+				A[i]=Integer.parseInt(string[i]);
+			}
+			for (int i = 1,k=0; i <=18; i++) {//인영이의 카드
+				check = true;
+				for (int j = 0; j < 9; j++) {
+					if(i==A[j]) {//규영 카드이면
+						check = false;// 표시해서
+						break;
+					}
+				}
+				if(check) B[k++] = i;//규영 카드가 아니였으면 인영이의 카드로
+			}//end for
+			win=0;
+            lose=0;
+			possablity(0);
+			bw.write("#"+t+" "+win+" "+lose+"\n");
+		}//end testcase
+		bw.flush();
+		bw.close();
+
+	}
+
+}

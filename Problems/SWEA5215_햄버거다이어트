@@ -1,0 +1,39 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Main{
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        for (int test_case =  1; test_case<= T;test_case++) {
+            String[] input = br.readLine().split(" ");
+            int N = Integer.parseInt(input[0]);//갯수
+            int L = Integer.parseInt(input[1]);//최대 칼로리
+            int[] dp = new int [L+1];
+            int[] taste =new int[N];
+            int[] cal = new int[N];
+
+            for (int i = 0; i<N;i++) {
+                input = br.readLine().split(" ");
+                taste[i] = Integer.parseInt(input[0]);//맛 점수
+                cal[i] = Integer.parseInt(input[1]);//칼로리
+            }
+
+            for(int i =0 ;i<N;i++) {
+                for(int j = L;j>=cal[i];j--) {
+                    dp[j] = dp[j-cal[i]] +taste[i]> dp[j] ? dp[j-cal[i]] +taste[i] : dp[j];  // 더 큰 값으로 할당
+                }
+            }
+
+
+            sb.append("#"+test_case+" "+dp[L]).append("\n");//결과 출력
+
+        }
+        System.out.println(sb);
+
+    }
+
+}

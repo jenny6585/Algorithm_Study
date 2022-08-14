@@ -1,0 +1,64 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+
+public class Main {
+	
+	static int[] arr;
+	static int[] temp;
+	static int[] ans;
+	static boolean[] visited;
+	static int count = 0;
+	
+	
+	
+	public static void comb(int start, int depth) {//조합을 구하는 함수
+		if(depth == 7) {//만약 7개를 구했으면
+			if(count==1) return;//이미 한번 구했으면 break
+			int sum=0;
+			for (int i = 0; i < 7; i++) {//7개 숫자의 합을 구해서
+				sum+=temp[i];
+			}
+			if(sum==100) {//만약 합이 100이면 ans 배열에 담기
+				count++;
+				ans = Arrays.copyOf(temp, 7);
+			}
+			return;
+		}//end 기저조건
+		
+		for (int i = start; i < 9; i++) {//9개에서 7개 숫자 뽑기
+			if(!visited[i]) {
+				visited[i] = true;
+				temp[depth] = arr[i];
+				comb(start+1, depth+1);
+				visited[i] =false;
+			}
+		}
+	}
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		
+		arr = new int [9];
+		temp = new int[7];
+		ans = new int [7];
+		visited = new boolean[9];
+		for (int i = 0; i < 9; i++) {
+			arr[i] = Integer.parseInt(br.readLine());
+		}//입력
+		count=0;
+		comb(0,0);//조합 함수를 통해 결과를 받고
+		for (int i = 0; i < 7; i++) {//결과 출력
+			bw.write(ans[i]+"\n");
+		}
+		
+		bw.flush();
+		bw.close();
+
+	}
+
+}

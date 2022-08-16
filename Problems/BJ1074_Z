@@ -1,0 +1,45 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+public class Main{
+	
+	static int order=0;//순서를 위한 변수
+	
+	public static void search(int r, int c, int size) {
+		if(size==1)return;//한 개 남았을 경우 리턴
+		
+		if(r<size/2 && c<size/2) {//왼쪽 상단
+			search(r,c,size/2);//크기를 줄여서 다시 검색
+		}else if(r<size/2 && c>=size/2) {//오른쪽 상단
+			order += Math.pow(size/2, 2);//오른쪽 상단의 경우 왼쪽 상단 횟수만 더해주기
+			search(r,c-size/2,size/2);
+		}else if(r>=size/2 && c<size/2) {//왼쪽 하단
+			order += Math.pow(size/2, 2)*2;//왼쪽 상단,오른쪽 상단 횟수 더해주기
+			search(r-size/2,c,size/2);
+		}else {//오른쪽 하단
+			order += Math.pow(size/2, 2)*3;//왼쪽 상단,오른쪽 상단, 왼쪽 하단 횟수 더해주기
+			search(r-size/2,c-size/2,size/2);
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		String input[] =br.readLine().split(" "); 
+		
+		int N = Integer.parseInt(input[0]);//n값
+		int r = Integer.parseInt(input[1]);//r값
+		int c = Integer.parseInt(input[2]);//c 값
+		
+		search(r,c, (int)Math.pow(2, N));// 순서 찾기
+		
+		bw.write(order+"");//결과 출력
+		bw.flush();
+		bw.close();
+
+	}
+
+}

@@ -1,0 +1,32 @@
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int N = sc.nextInt();
+		int[]dp = new int [5001];
+		dp[3]=1;
+		dp[5]=1;
+		for (int i = 6; i <=N; i++) {//6부터 N까지(5로 나눠야해서 5보다 큰값부터)
+			int minus3 = dp[i-3];
+			int minus5 = dp[i-5];
+			if(minus3 !=0 && minus5!=0) {//둘다 0아닐 경우
+				dp[i] = Math.min(minus3, minus3)+1;//더 작은 값에 1더하기
+			}else if(minus3 ==0 && minus5==0) {//둘다 0이면
+				dp[i]=0;//0
+			}else if(minus3==0) {//하나의 값이 0이면 
+				dp[i] = minus5+1;//다른 값에 1 더해주기
+			}else if(minus5==0) {
+				dp[i] = minus3+1;
+			}
+		}//end for
+		if(dp[N]==0) {//결과값이 0이면 -1 출력
+			System.out.println(-1);
+		}else {
+			System.out.println(dp[N]);
+		}
+
+	}
+
+}

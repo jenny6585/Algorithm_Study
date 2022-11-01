@@ -1,0 +1,134 @@
+package problems;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+
+public class BJ1873_상호의배틀필드 {
+
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		
+		int T = Integer.parseInt(br.readLine());
+		String []input;
+		for (int t = 1; t <= T; t++) {
+			input = br.readLine().split(" ");
+			int H = Integer.parseInt(input[0]);
+			int W = Integer.parseInt(input[1]);
+			int carX=0;
+			int carY=0;
+			int time =0;
+			char []move = new char[time];
+			
+			char[][]map = new char[H][W];
+			
+			for (int i = 0; i < H; i++) {
+				map[i] = br.readLine().toCharArray();
+				for (int j = 0; j < W; j++) {
+					if(map[i][j]=='<' || map[i][j]=='>' || map[i][j]=='^' || map[i][j]=='v') {
+						carX =i;
+						carY=j;
+					}
+				}
+			}
+
+			time = Integer.parseInt(br.readLine());
+			move = br.readLine().toCharArray();
+			
+			
+			for (int i = 0; i < time; i++) {
+				
+				if(move[i]=='R') {
+					map[carX][carY] = '>';//해당방향으로 머리를 돌리고
+					if(carY+1<W && map[carX][carY+1]=='.') {
+						map[carX][carY]='.';
+						map[carX][carY+1]='>';
+						carY+=1;
+					}
+				}else if(move[i]=='L') {
+					map[carX][carY] = '<';//해당방향으로 머리를 돌리고
+					if(carY-1>=0 && map[carX][carY-1]=='.') {
+						map[carX][carY]='.';
+						map[carX][carY-1]='<';
+						carY-=1;
+					}
+				}else if(move[i]=='U') {
+					map[carX][carY] = '^';//해당방향으로 머리를 돌리고
+					if(carX-1>=0 && map[carX-1][carY]=='.') {
+						map[carX][carY]='.';
+						map[carX-1][carY]='^';
+						carX-=1;
+					}
+				}else if(move[i]=='D') {
+					map[carX][carY] = 'v';//해당방향으로 머리를 돌리고
+					if(carX+1<H && map[carX+1][carY]=='.') {
+						map[carX][carY]='.';
+						map[carX+1][carY]='v';
+						carX+=1;
+					}
+				}else if(move[i]=='S') {
+					//쏠때 고려: 방향 앞에 칸수?
+					if(map[carX][carY]=='>') {
+						for (int j = 1; j <= W-1-carY; j++) {//벽에 닿을때까지
+							if(map[carX][carY+j]=='*') {//벽돌을 맞으면
+								map[carX][carY+j]='.';
+								break;
+							}else if(map[carX][carY+j]=='#') {//강철을 맞으면
+								break;
+							}
+						}
+					}else if(map[carX][carY]=='<') {
+						for (int j = carY-1; j >= 0; j--) {//벽에 닿을때까지
+							if(map[carX][j]=='*') {//벽돌을 맞으면
+								map[carX][j]='.';
+								break;
+							}else if(map[carX][j]=='#') {//강철을 맞으면
+								break;
+							}
+						}
+					}else if(map[carX][carY]=='v') {
+						for (int j = 1; j <= H-1-carX; j++) {//벽에 닿을때까지
+							if(map[carX+j][carY]=='*') {//벽돌을 맞으면
+								map[carX+j][carY]='.';
+								break;
+							}else if(map[carX+j][carY]=='#') {//강철을 맞으면
+								break;
+							}
+						}
+					}else if(map[carX][carY]=='^') {
+						for (int j = carX-1; j >= 0; j--) {//벽에 닿을때까지
+							if(map[j][carY]=='*') {//벽돌을 맞으면
+								map[j][carY]='.';
+								break;
+							}else if(map[j][carY]=='#') {//강철을 맞으면
+								break;
+							}
+						}
+					}
+					
+				}
+				
+			}
+			
+			bw.write("#"+t+" ");
+			for (int i = 0; i < H; i++) {
+				for (int j = 0; j < W; j++) {
+					bw.write(map[i][j]);					
+				}
+				bw.write("\n");
+			}
+			
+			
+		}//test case end
+		bw.flush();
+		bw.close();
+
+	}
+
+}
+
+
+
